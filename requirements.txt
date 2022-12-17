@@ -1,0 +1,8 @@
+einops
+torch==1.13.0
+numpy
+ipykernel
+jupyterlab
+galois
+polars
+
