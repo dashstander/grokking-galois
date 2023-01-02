@@ -1,8 +1,11 @@
 einops
-torch==1.13.0
 numpy
 ipykernel
+circuitsvis
+plotly
+ipywidgets
 jupyterlab
 galois
 polars
-
+tqdm
+wandb
