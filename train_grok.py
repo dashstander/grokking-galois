@@ -33,7 +33,7 @@ def make_dataset(p: int, device):
 
 def get_dataloaders(p: int, frac_train: float, batch_size: int, device):
     dataset, labels = make_dataset(p, device)
-    indices = torch.randperm(p**4)
+    indices = torch.randperm(p**3)
     cutoff = int((p**3) * frac_train)
     train_indices = indices[:cutoff]
     test_indices = indices[cutoff:]
