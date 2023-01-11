@@ -80,19 +80,23 @@ def train(model, optimizer, train_dataloader, test_dataloader, checkpoint_every,
 
     for epoch in tqdm.tqdm(range(num_epochs)):
         train_loss = train_forward(model, train_dataloader)
-        train_losses.append(train_loss.item())
+        np_train = train_loss.item()
+        train_losses.append(np_train)
 
         optimizer.step()
         optimizer.zero_grad()
 
         with torch.inference_mode():
             test_loss = test_forward(model, test_dataloader)
-            test_losses.append(test_loss.item())
+            np_test = test_loss.item()
+            test_losses.append(np_test)
+        
+        wandb.log({'loss/train': np_train, 'loss/test': np_test})
         
         if (epoch % checkpoint_every) == 0:
             checkpoint_epochs.append(epoch)
             model_checkpoints.append(copy.deepcopy(model.state_dict()))
-            print(f"Epoch {epoch} Train Loss {train_loss.item()} Test Loss {test_loss.item()}")
+            print(f"Epoch {epoch} Train Loss {np_train} Test Loss {np_test}")
         if test_loss.item() <= grok_threshold:
             break
 
@@ -139,6 +143,8 @@ def main():
         group="x*y+z",
         config=cfg.to_dict()
     )
+
+    wandb.watch(model, log_freq=100)
 
     train_data, test_data = get_dataloaders(p, frac_train, batch_size, device)
 
