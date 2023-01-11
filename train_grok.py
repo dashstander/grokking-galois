@@ -99,11 +99,20 @@ def train(model, optimizer, train_dataloader, test_dataloader, checkpoint_every,
             print(f"Epoch {epoch} Train Loss {np_train} Test Loss {np_test}")
         if test_loss.item() <= grok_threshold:
             break
-
+    torch.save(
+     {
+         "model":model.state_dict(),
+         "config": model.cfg,
+         "checkpoints": model_checkpoints,
+         "checkpoint_epochs": checkpoint_epochs,
+         "test_losses": test_losses,
+         "train_losses": train_losses
+     },
+     "grokking_xyz_3333.pth")
 
 def main():
     p = 53
-    frac_train = 0.5
+    frac_train = 0.333333
     lr = 1e-3
     wd = 1. 
     betas = (0.9, 0.98)
